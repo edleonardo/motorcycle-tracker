@@ -1,0 +1,173 @@
+{
+  "info": {
+    "name": "Motorcycle Trip Tracker API",
+    "description": "Complete API collection for testing motorcycle trip tracking endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Ping Ingestion",
+      "item": [
+        {
+          "name": "Send Ping (HTTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licencePlate\": \"ABC-1234\",\n  \"timestamp\": 1706400000,\n  \"latitude\": -23.5505,\n  \"longitude\": -46.6333,\n  \"speed\": 45.5,\n  \"odometer\": 12345.67\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trips/pings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips", "pings"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Ping (Kafka)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licencePlate\": \"ABC-1234\",\n  \"timestamp\": 1706400100,\n  \"latitude\": -23.5510,\n  \"longitude\": -46.6340,\n  \"speed\": 50.0,\n  \"odometer\": 12347.50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trips/pings/kafka",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips", "pings", "kafka"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Trip Management",
+      "item": [
+        {
+          "name": "List All Trips",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Trips with Pagination",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Trips by License Plate",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?licencePlate=ABC-1234",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "licencePlate",
+                  "value": "ABC-1234"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Trips by Date Range",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?startFrom=1706400000&startTo=1706500000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "startFrom",
+                  "value": "1706400000"
+                },
+                {
+                  "key": "startTo",
+                  "value": "1706500000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trip Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips", "1"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "Get Motorcycle Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trips/stats/ABC-1234",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips", "stats", "ABC-1234"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    }
+  ]
+}
