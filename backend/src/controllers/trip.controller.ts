@@ -62,7 +62,6 @@ export class TripController {
   async listTrips(
     @Query(new ValidationPipe({ transform: true })) query: ListTripsQueryDto,
   ): Promise<PaginatedTripsDto> {
-    console.log("Received query parameters:", query);
     return this.tripService.listTrips(query);
   }
 

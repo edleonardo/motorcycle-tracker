@@ -55,13 +55,15 @@ export class TripService {
     }
 
     await this.recordPing(dto);
+    this.eventEmitter.emit("ping.received", dto);
   }
 
   private shouldCloseTrip(active: ActiveTrip, current: PingDto): boolean {
     const idleTime = current.timestamp - active.lastTimestamp;
     const isStopped = current.speed < TRIP_CONFIG.MIN_SPEED;
-    const isStationary =
-      current.odometer - active.lastOdometer < TRIP_CONFIG.MIN_DISPLACEMENT;
+    const odometerDelta =
+      Math.round((current.odometer - active.lastOdometer) * 100) / 100;
+    const isStationary = odometerDelta < TRIP_CONFIG.MIN_DISPLACEMENT;
 
     const hasTimedOut = idleTime > TRIP_CONFIG.IDLE_TIMEOUT;
     const isFinishedTrip = isStopped && isStationary;
@@ -107,7 +109,7 @@ export class TripService {
 
     await this.dataSource.transaction(async (manager) => {
       const distance = activeTrip.lastOdometer - activeTrip.startOdometer;
-      const avgSpeed = duration > 0 ? (distance / duration) * 3600 : 0;
+      const avgSpeed = (distance / duration) * 3600;
 
       const trip = manager.create(Trip, {
         ...activeTrip,
@@ -142,7 +144,6 @@ export class TripService {
   private async recordPing(dto: PingDto): Promise<void> {
     const ping = this.pingRepo.create({ ...dto, tripId: null });
     await this.pingRepo.save(ping);
-    this.eventEmitter.emit("ping.received", dto);
   }
 
   async listTrips(query: ListTripsQueryDto): Promise<PaginatedTripsDto> {

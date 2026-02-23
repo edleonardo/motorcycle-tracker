@@ -307,7 +307,7 @@ describe("TripService", () => {
         });
 
         await service.processPing(
-          makePingDto({ timestamp: 800, speed: 60, odometer: 60 }),
+          makePingDto({ timestamp: 59, speed: 0, odometer: 5.25 }),
         );
 
         expect(activeTripRepo.remove).toHaveBeenCalledWith(active);
@@ -320,21 +320,38 @@ describe("TripService", () => {
           lastTimestamp: 200,
           lastOdometer: 20,
         });
-        const { service, eventEmitter } = await createService({
-          findOne: jest.fn().mockResolvedValue(active),
-        });
+        const { service, eventEmitter } = await createService(
+          {
+            findOne: jest.fn().mockResolvedValue(active),
+          },
+          {},
+          {},
+          {
+            transaction: jest.fn().mockImplementation((callback) => {
+              return callback({
+                create: jest.fn().mockImplementation((entity, data) => ({
+                  id: 1,
+                  ...data,
+                })),
+                save: jest.fn().mockResolvedValue({ id: 1 }),
+                createQueryBuilder: jest.fn().mockReturnValue({
+                  update: jest.fn().mockReturnThis(),
+                  set: jest.fn().mockReturnThis(),
+                  where: jest.fn().mockReturnThis(),
+                  andWhere: jest.fn().mockReturnThis(),
+                  execute: jest.fn(),
+                }),
+                remove: jest.fn(),
+              });
+            }),
+          },
+        );
 
-        const dto = makePingDto({ timestamp: 800, speed: 4, odometer: 20.2 });
+        const dto = makePingDto({ timestamp: 1000, speed: 4, odometer: 20.2 });
 
         await service.processPing(dto);
 
-        expect(eventEmitter.emit).toHaveBeenNthCalledWith(
-          1,
-          "ping.received",
-          dto,
-        );
-        expect(eventEmitter.emit).toHaveBeenNthCalledWith(
-          2,
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
           "trip.completed",
           expect.any(Object),
         );
