@@ -3,6 +3,7 @@
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 20+
 - Docker & Docker Compose
 - Git
@@ -11,17 +12,20 @@
 ### Initial Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone <repository-url>
 cd motorcycle-tracker
 ```
 
 2. **Quick start with Docker**
+
 ```bash
 ./setup.sh
 ```
 
 3. **Manual setup (for development)**
+
 ```bash
 # Start infrastructure
 docker-compose up -d postgres kafka zookeeper
@@ -44,6 +48,7 @@ npm run dev
 ### Backend Development
 
 #### Running the Server
+
 ```bash
 cd backend
 
@@ -58,6 +63,7 @@ npm run start:prod
 ```
 
 #### Running Tests
+
 ```bash
 # Unit tests
 npm test
@@ -75,11 +81,12 @@ npm run test:e2e
 #### Adding a New Feature
 
 1. **Create Entity** (if needed)
+
 ```typescript
 // src/entities/new-feature.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('new_features')
+@Entity("new_features")
 export class NewFeature {
   @PrimaryGeneratedColumn()
   id: number;
@@ -90,9 +97,10 @@ export class NewFeature {
 ```
 
 2. **Create DTO**
+
 ```typescript
 // src/dto/new-feature.dto.ts
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty } from "class-validator";
 
 export class CreateNewFeatureDto {
   @IsString()
@@ -102,12 +110,13 @@ export class CreateNewFeatureDto {
 ```
 
 3. **Create Service**
+
 ```typescript
 // src/services/new-feature.service.ts
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { NewFeature } from '../entities/new-feature.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { NewFeature } from "../entities/new-feature.entity";
 
 @Injectable()
 export class NewFeatureService {
@@ -124,13 +133,14 @@ export class NewFeatureService {
 ```
 
 4. **Create Controller**
+
 ```typescript
 // src/controllers/new-feature.controller.ts
-import { Controller, Post, Body } from '@nestjs/common';
-import { NewFeatureService } from '../services/new-feature.service';
-import { CreateNewFeatureDto } from '../dto/new-feature.dto';
+import { Controller, Post, Body } from "@nestjs/common";
+import { NewFeatureService } from "../services/new-feature.service";
+import { CreateNewFeatureDto } from "../dto/new-feature.dto";
 
-@Controller('api/new-features')
+@Controller("api/new-features")
 export class NewFeatureController {
   constructor(private service: NewFeatureService) {}
 
@@ -142,13 +152,14 @@ export class NewFeatureController {
 ```
 
 5. **Create Module**
+
 ```typescript
 // src/modules/new-feature.module.ts
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { NewFeatureController } from '../controllers/new-feature.controller';
-import { NewFeatureService } from '../services/new-feature.service';
-import { NewFeature } from '../entities/new-feature.entity';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { NewFeatureController } from "../controllers/new-feature.controller";
+import { NewFeatureService } from "../services/new-feature.service";
+import { NewFeature } from "../entities/new-feature.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([NewFeature])],
@@ -159,9 +170,10 @@ export class NewFeatureModule {}
 ```
 
 6. **Add to App Module**
+
 ```typescript
 // src/app.module.ts
-import { NewFeatureModule } from './modules/new-feature.module';
+import { NewFeatureModule } from "./modules/new-feature.module";
 
 @Module({
   imports: [
@@ -173,9 +185,10 @@ export class AppModule {}
 ```
 
 7. **Write Tests**
+
 ```typescript
 // src/services/new-feature.service.spec.ts
-describe('NewFeatureService', () => {
+describe("NewFeatureService", () => {
   // Add tests here
 });
 ```
@@ -183,6 +196,7 @@ describe('NewFeatureService', () => {
 ### Frontend Development
 
 #### Running the App
+
 ```bash
 cd frontend
 
@@ -197,6 +211,7 @@ npm start
 #### Creating a New Component
 
 1. **Create Component File**
+
 ```typescript
 // components/NewComponent.tsx
 'use client';
@@ -220,6 +235,7 @@ export default function NewComponent({ title }: NewComponentProps) {
 ```
 
 2. **Use Component**
+
 ```typescript
 // app/page.tsx
 import NewComponent from '../components/NewComponent';
@@ -239,12 +255,12 @@ export default function Home() {
 // lib/api.ts
 export const myApi = {
   getData: async (): Promise<MyData> => {
-    const response = await apiClient.get('/api/my-endpoint');
+    const response = await apiClient.get("/api/my-endpoint");
     return response.data;
   },
 
   postData: async (data: MyData): Promise<void> => {
-    await apiClient.post('/api/my-endpoint', data);
+    await apiClient.post("/api/my-endpoint", data);
   },
 };
 ```
@@ -308,28 +324,18 @@ kafka-console-producer \
 ### Backend Debugging
 
 1. **VS Code Launch Configuration**
+
 ```json
 {
   "type": "node",
   "request": "launch",
   "name": "Debug NestJS",
-  "runtimeArgs": [
-    "-r",
-    "ts-node/register",
-    "-r",
-    "tsconfig-paths/register"
-  ],
+  "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
   "args": ["${workspaceFolder}/backend/src/main.ts"],
   "cwd": "${workspaceFolder}/backend",
   "protocol": "inspector",
   "console": "integratedTerminal"
 }
-```
-
-2. **Enable Logging**
-```typescript
-// main.ts
-app.useLogger(['log', 'error', 'warn', 'debug', 'verbose']);
 ```
 
 ### Frontend Debugging
@@ -367,12 +373,14 @@ npx prettier --write "**/*.{ts,tsx}"
 ## Performance Optimization
 
 ### Backend
+
 - Use database indexes
 - Implement caching (Redis)
 - Batch database operations
 - Optimize queries with proper joins
 
 ### Frontend
+
 - Use React.memo for expensive components
 - Implement virtual scrolling for large lists
 - Lazy load components
@@ -381,6 +389,7 @@ npx prettier --write "**/*.{ts,tsx}"
 ## Common Issues
 
 ### Database Connection Issues
+
 ```bash
 # Check if PostgreSQL is running
 docker-compose ps postgres
@@ -393,6 +402,7 @@ docker-compose restart postgres
 ```
 
 ### Kafka Issues
+
 ```bash
 # Restart Kafka
 docker-compose restart kafka zookeeper
@@ -405,6 +415,7 @@ docker-compose exec kafka kafka-topics --list --bootstrap-server localhost:9092
 ```
 
 ### Port Conflicts
+
 ```bash
 # Check what's using port 3001
 lsof -i :3001
@@ -416,6 +427,7 @@ kill -9 <PID>
 ## Best Practices
 
 ### Backend
+
 1. Always validate input with DTOs
 2. Use dependency injection
 3. Write unit tests for services
@@ -425,6 +437,7 @@ kill -9 <PID>
 7. Use environment variables for configuration
 
 ### Frontend
+
 1. Use TypeScript for type safety
 2. Keep components small and focused
 3. Use custom hooks for reusable logic
@@ -434,6 +447,7 @@ kill -9 <PID>
 7. Use semantic HTML
 
 ### Git Workflow
+
 1. Create feature branches: `feature/my-feature`
 2. Write descriptive commit messages
 3. Keep commits atomic
