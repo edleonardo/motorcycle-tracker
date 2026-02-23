@@ -24,7 +24,7 @@ export function useTrips(licencePlate?: string) {
       setTrips(data.trips);
       setTotalPages(data.totalPages);
     } catch (err) {
-      setError("Falha ao carregar viagens. Tente novamente.");
+      setError("Failed to load trips. Try again later.");
       console.error(err);
     } finally {
       setLoading(false);
