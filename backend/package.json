@@ -2,7 +2,7 @@
   "name": "motorcycle-tracker-backend",
   "version": "1.0.0",
   "description": "Backend service for motorcycle trip tracking",
-  "author": "Your Name",
+  "author": "Eduardo Alves",
   "private": true,
   "license": "MIT",
   "scripts": {

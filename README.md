@@ -325,6 +325,9 @@ docker-compose logs postgres
 
 MIT License - see LICENSE file for details
 
-## 👥 Author
+## Author
 
-Eduardo Alves
+👤 **Eduardo Alves**
+
+- Github: [@ed-leonardo](https://github.com/ed-leonardo)
+- LinkedIn: [Eduardo Alves Leonardo](https://www.linkedin.com/in/eduardo-alves-leonardo/)
